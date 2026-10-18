@@ -4,15 +4,22 @@ import Link from "next/link";
 import React from "react";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, LockKeyhole } from "lucide-react";
+import {  LockKeyhole } from "lucide-react";
 import { authClient } from "@/lib/auth/auth-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { Result } from "pg";
+import { FaGoogle } from "react-icons/fa6";
 
 export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
   const [name, setName] = useState("");
@@ -20,6 +27,7 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingGoogle, setLoadingGoogle] = useState(false);
   const router = useRouter();
   const isSignup = mode === "signup";
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -40,98 +48,97 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
     router.refresh();
   }
   async function withGoogle(event: React.MouseEvent) {
-    event.button = 5;
-    console.log("j")
+    setLoadingGoogle(true);
+    setError("");
     const result = isSignup
       ? await authClient.signUp
-      : await authClient.signIn.social({provider:"google"});  
-      console.log(result)
-    };
+      : await authClient.signIn.social({ provider: "google", callbackURL: "/" });
+    console.log(result);
+    setLoadingGoogle(false);
+    if (!result) {
+      setError("Authentication failed.");
+      return;
+    }
+  }
   return (
-    <main className="auth-shell">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-4">
-          <Link href="/">
-            <Button variant="ghost" size="sm" className="w-fit -ml-3">
-              <ArrowLeft className="h-4 w-4" /> Back home
-            </Button>
-          </Link>
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-            <LockKeyhole className="h-5 w-5" />
-          </div>
-          <div>
-            <CardTitle className="text-2xl">{isSignup ? "Make the web yours." : "Welcome back."}</CardTitle>
-            <CardDescription className="mt-2">
-              {isSignup
-                ? "Create a private place for the links you want to keep."
-                : "Sign in to open your private link collection."}
-            </CardDescription>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={submit} className="space-y-4">
-            {isSignup && (
-              <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  required
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                  placeholder="Alex Morgan"
-                />
-              </div>
-            )}
+    <Card dir="rtl" className="w-ful max-w-sm" >
+      <CardHeader className="space-y-  justify-center items-center">
+
+        <div className="flex m-auto mb-6 h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+          <LockKeyhole className="h-5 w-5" />
+        </div>
+          <CardTitle className="text-3xl text-center">{isSignup ? "إنشاء حساب" : "تسجيل الدخول"}</CardTitle>
+          <CardDescription className=" text-center">
+            {isSignup
+              ? " إنشاء حسابك الخاص لفتح مجموعتك الخاصة من الروابط."
+              : " قم بتسجيل الدخول للوصول إلى مجموعتك الخاصة من الروابط."}
+          </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={submit} className="space-y-4">
+          {isSignup && (
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="name">الاسم</Label>
               <Input
-                id="email"
+                id="name"
                 required
-                type="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                placeholder="you@example.com"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                placeholder="أدخل اسمك"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                required
-                minLength={8}
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                placeholder="At least 8 characters"
-              />
-            </div>
-            {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Please wait…" : isSignup ? "Create my vault" : "Sign in"}
-            </Button>
-          </form>
-          <div className="my-6 flex items-center gap-3">
-            <Separator />
-            <span className="text-xs text-muted-foreground">OR</span>
-            <Separator />
+          )}
+          <div className="space-y-2">
+            <Label htmlFor="email">البريد الإلكتروني</Label>
+            <Input
+              id="email"
+              required
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="you@example.com"
+            />
           </div>
-          <Button onClick={withGoogle} className={'w-full'}>
-            {loading ? "Please wait…" : isSignup ? "sign up with google" : "Sign in with google"}
+          <div className="space-y-2">
+            <Label htmlFor="password">كلمة المرور</Label>
+            <Input
+              id="password"
+              required
+              minLength={8}
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="أدخل كلمة المرور"
+            />
+          </div>
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+          <Button type="submit" className="w-full mt-6" disabled={loading}>
+            {loading ? "" : isSignup ? "إنشاء حساب" : "تسجيل الدخول"}
           </Button>
-        </CardContent>
-        <CardFooter   >
-          <p className="text-center w-full text-sm text-muted-foreground">
-            {isSignup ? "Already have an account?" : "New to LinkVault?"}{" "}
-            <Link className="font-medium text-primary hover:underline" href={isSignup ? "/login" : "/register"}>
-              {isSignup ? "Sign in" : "Create an account"}
-            </Link>
-          </p>
-        </CardFooter>
-      </Card>
-    </main>
+        </form>
+        <div className="flex items-center gap-3">
+          <Separator className="flex-1" />
+          <span className="shrink-0 text-xs text-muted-foreground">أو</span>
+          <Separator className="flex-1" />
+        </div>
+
+        <Button onClick={withGoogle} variant={"secondary"} disabled={loadingGoogle} className={"w-full"}>
+          {loadingGoogle ? "Please wait…" : isSignup ? "إنشاء حساب مع Google" : "تسجيل الدخول مع Google"}
+          <FaGoogle />
+        </Button>
+      </CardContent>
+      <CardFooter>
+        <p className="text-center w-full text-sm text-muted-foreground">
+          {isSignup ? "هل لديك حساب بالفعل؟" : "هل تملك حساباً بالفعل؟"}{" "}
+          <Link className="font-medium text-primary hover:underline" href={isSignup ? "/login" : "/register"}>
+            {isSignup ? "تسجيل الدخول" : "إنشاء حساب"}
+          </Link>
+        </p>
+      </CardFooter>
+    </Card>
   );
 }

@@ -7,6 +7,6 @@ export const dynamic = "force-dynamic";
 export default async function DashboardPage() {
   const session = await getCurrentSession();
   if (!session) redirect("/login");
-  console.log(session)
+  console.log("DashboardPage",session)
   return <LinkManager userName={session.user.name} />;
 }

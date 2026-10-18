@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -113,6 +113,7 @@ export function LinkManager({ userName }: { userName: string }) {
         <header className="flex items-center justify-between gap-4 py-4">
           <div className="flex items-center gap-3">
             <Avatar>
+              <AvatarImage src={""}/>
               <AvatarFallback>{initials}</AvatarFallback>
             </Avatar>
             <div>
