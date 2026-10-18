@@ -5,6 +5,6 @@ import { LandingPage } from "@/app/landing-page";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  if (await getCurrentSession()) redirect("/dashboard");
+  if (await getCurrentSession()) redirect("/link");
   return <LandingPage />;
 }

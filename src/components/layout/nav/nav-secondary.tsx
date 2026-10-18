@@ -27,10 +27,10 @@ export function NavSecondary({
           {children}
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton size={'lg'}  className="w-full text-xl"
+              <SidebarMenuButton className="w-full text-xl"
                 render={
                   <Link href={item.url}>
-                    <item.icon size={24} />
+                    <item.icon size={44} />
                     <span>{item.title}</span>
                   </Link>
                 }

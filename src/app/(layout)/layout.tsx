@@ -14,11 +14,11 @@ import {
 import { IconLayoutDashboard, IconUsers, IconLink, IconChartBar, IconHistory } from "@tabler/icons-react";
 import Footer from "@/components/layout/Footer";
 
-
 import { Separator } from "@/components/ui/separator";
 import { NavUser } from "@/components/layout/nav/nav-user";
 import { IconAlarm, IconHelp, IconHome, IconSearch, IconSettings } from "@tabler/icons-react";
 import { NavSecondary } from "@/components/layout/nav/nav-secondary";
+import { AdminNavigation } from "@/components/layout/nav/nav-admin";
 export default async function Layout({
   children,
 }: Readonly<{
@@ -45,8 +45,7 @@ export default async function Layout({
             <Separator />
           </SidebarHeader>
           <SidebarContent dir="rtl" className=" text-2xl">
-            <NavSecondary items={navigation} className="mt-aut" />
-            {session.user.role === "admin" && <NavSecondary items={navigationAdmin} className="mt-aut" />}
+            {session.user.role === "admin" && <AdminNavigation />}
             <NavSecondary items={navSecondary} className="mt-auto" />
           </SidebarContent>
           <SidebarFooter></SidebarFooter>
@@ -63,7 +62,6 @@ export default async function Layout({
     </>
   );
 }
-
 
 const navSecondary = [
   {

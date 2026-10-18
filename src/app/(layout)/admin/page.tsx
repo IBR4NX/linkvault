@@ -1,6 +1,6 @@
-import { IconUsers, IconLink, IconUserPlus, IconUserOff, IconClock, IconExternalLink } from "@tabler/icons-react";
+import { IconUsers, IconLink, IconUserPlus, IconUserOff, IconClock, IconExternalLink, Icon } from "@tabler/icons-react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/lib/prisma";
@@ -89,24 +89,14 @@ export default async function AdminPage() {
       description: "جميع الحسابات المسجلة",
       icon: IconUsers,
     },
-    {
-      title: "إجمالي الروابط",
-      value: totalLinks,
-      description: "جميع الروابط المحفوظة",
-      icon: IconLink,
-    },
+
     {
       title: "مستخدمون جدد",
       value: newUsers,
       description: "خلال آخر 7 أيام",
       icon: IconUserPlus,
     },
-    {
-      title: "روابط اليوم",
-      value: todayLinks,
-      description: "الروابط المنشأة اليوم",
-      icon: IconClock,
-    },
+
     {
       title: "المستخدمون المحظورون",
       value: bannedUsers,
@@ -120,25 +110,7 @@ export default async function AdminPage() {
       {/* الإحصائيات */}
       <section aria-label="إحصائيات المنصة" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {stats.map((stat) => {
-          const Icon = stat.icon;
-
-          return (
-            <Card className="bg-linear-to-br from-primary/5 via-card to-card" key={stat.title}>
-              <CardHeader className="flex flex-row items-center justify-between gap-4 pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">{stat.title}</CardTitle>
-
-                <div className="rounded-lg bg-muted p-2">
-                  <Icon className="size-5 text-muted-foreground" />
-                </div>
-              </CardHeader>
-
-              <CardContent className="space-y-1">
-                <p className="text-3xl font-bold tabular-nums">{numberFormatter.format(stat.value)}</p>
-
-                <p className="text-xs text-muted-foreground">{stat.description}</p>
-              </CardContent>
-            </Card>
-          );
+          return <CardAnalytics key={stat.title} item={stat} />;
         })}
       </section>
 
@@ -242,5 +214,36 @@ export default async function AdminPage() {
         </Card>
       </section>
     </main>
+  );
+}
+
+export function CardAnalytics({
+  item,
+  children,
+  ...props
+}: {
+  item: {
+    title: string;
+    url?: string;
+    icon: Icon;
+    value?: number;
+    description?: string;
+  };
+} & React.ComponentPropsWithoutRef<typeof Card>) {
+  return (
+    <Card className="bg-linear-to-br from-primary/5 via-card to-card" key={item.title}>
+      <CardHeader className="flex flex-row items-center justify-between gap-4 pb-2">
+        <CardDescription className="text-sm font-medium text-muted-foreground">{item.title}</CardDescription>
+
+        <CardAction>
+          <item.icon className="size-5 text-muted-foreground" />
+        </CardAction>
+        {item.value !== undefined && <CardTitle>{numberFormatter.format(item.value)}</CardTitle>}
+      </CardHeader>
+
+      <CardContent className="space-y-1">
+        {item.description && <p className="text-xs text-muted-foreground">{item.description}</p>}
+      </CardContent>
+    </Card>
   );
 }

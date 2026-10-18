@@ -85,15 +85,15 @@ export const ModeToggle = () => {
   );
 };
 
-type ColorTheme = "blue" | "yellow" | "red";
-const colors: ColorTheme[] = ["blue", "yellow", "red"];
+type ColorTheme ="default"| "violet" | "pink" | "sky"|"amber";
+const colors: ColorTheme[] = ["default", "violet", "pink", "sky", "amber"];
 
 const isColorTheme = (value: string): value is ColorTheme =>
   colors.includes(value as ColorTheme);
 
 export function ColorToggle() {
   const [loading, setLoading] = React.useState(true);
-  const [color, setColor] = React.useState<ColorTheme>("blue");
+  const [color, setColor] = React.useState<ColorTheme>("default");
   React.useEffect(() => {
     setLoading(false);
     const storedColor = localStorage.getItem("color");
@@ -105,7 +105,7 @@ export function ColorToggle() {
   if (loading) return null;
   function setTheme(theme: ColorTheme) {
     const html = document.documentElement;
-    html.classList.remove("theme-blue", "theme-yellow", "theme-red");
+    html.classList.remove("theme-default", "theme-violet", "theme-pink", "theme-sky", "theme-amber");
     html.classList.add(`theme-${theme}`);
     localStorage.setItem("color", theme);
     setColor(theme);
@@ -114,7 +114,7 @@ export function ColorToggle() {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button variant="secondary" size="icon">
+          <Button  size="icon">
             <>
               <Palette className="h-[1.2rem] w-[1.2rem]" />
             </>

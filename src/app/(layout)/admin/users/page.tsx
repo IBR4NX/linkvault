@@ -8,21 +8,9 @@ import { authClient } from "@/lib/auth/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const PAGE_SIZE = 10;
@@ -85,11 +73,7 @@ export default function AdminUsersPage() {
     } catch (err) {
       setUsers([]);
       setTotal(0);
-      setError(
-        err instanceof Error
-          ? err.message
-          : "حدث خطأ أثناء تحميل المستخدمين",
-      );
+      setError(err instanceof Error ? err.message : "حدث خطأ أثناء تحميل المستخدمين");
     } finally {
       setLoading(false);
     }
@@ -120,14 +104,7 @@ export default function AdminUsersPage() {
   return (
     <main className="space-y-6 p-4 md:p-6" dir="rtl">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">
-            إدارة المستخدمين
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            عرض حسابات المستخدمين والبحث عنها.
-          </p>
-        </div>
+
 
         <Badge variant="secondary" className="w-fit gap-2 px-3 py-1.5">
           <Users className="size-4" />
@@ -158,11 +135,7 @@ export default function AdminUsersPage() {
                   setSearch(event.target.value);
                   setPage(0);
                 }}
-                placeholder={
-                  searchField === "name"
-                    ? "ابحث باسم المستخدم..."
-                    : "ابحث بالبريد الإلكتروني..."
-                }
+                placeholder={searchField === "name" ? "ابحث باسم المستخدم..." : "ابحث بالبريد الإلكتروني..."}
                 className="pr-9"
                 aria-label="البحث عن المستخدمين"
               />
@@ -192,13 +165,7 @@ export default function AdminUsersPage() {
               className="rounded-md border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive"
             >
               <p>{error}</p>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className="mt-3"
-                onClick={() => void loadUsers()}
-              >
+              <Button type="button" variant="outline" size="sm" className="mt-3" onClick={() => void loadUsers()}>
                 إعادة المحاولة
               </Button>
             </div>
@@ -228,19 +195,13 @@ export default function AdminUsersPage() {
                   ))
                 ) : error ? (
                   <TableRow>
-                    <TableCell
-                      colSpan={4}
-                      className="h-24 text-center text-muted-foreground"
-                    >
+                    <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
                       تعذر عرض البيانات.
                     </TableCell>
                   </TableRow>
                 ) : users.length === 0 ? (
                   <TableRow>
-                    <TableCell
-                      colSpan={4}
-                      className="h-32 text-center text-muted-foreground"
-                    >
+                    <TableCell colSpan={4} className="h-32 text-center text-muted-foreground">
                       لا يوجد مستخدمون مطابقون للبحث.
                     </TableCell>
                   </TableRow>
@@ -250,23 +211,13 @@ export default function AdminUsersPage() {
                       <TableCell>
                         <div className="flex min-w-52 items-center gap-3">
                           <Avatar>
-                            <AvatarImage
-                              src={user.image ?? undefined}
-                              alt={user.name}
-                            />
-                            <AvatarFallback>
-                              {getInitials(user.name)}
-                            </AvatarFallback>
+                            <AvatarImage src={user.image ?? undefined} alt={user.name} />
+                            <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
                           </Avatar>
 
                           <div className="min-w-0 space-y-1">
-                            <p className="truncate font-medium">
-                              {user.name}
-                            </p>
-                            <p
-                              dir="ltr"
-                              className="truncate text-right text-xs text-muted-foreground"
-                            >
+                            <p className="truncate font-medium">{user.name}</p>
+                            <p dir="ltr" className="truncate text-right text-xs text-muted-foreground">
                               {user.email}
                             </p>
                           </div>
@@ -274,21 +225,13 @@ export default function AdminUsersPage() {
                       </TableCell>
 
                       <TableCell>
-                        <Badge
-                          variant={
-                            user.role === "admin" ? "default" : "secondary"
-                          }
-                        >
+                        <Badge variant={user.role === "admin" ? "default" : "secondary"}>
                           {user.role === "admin" ? "مدير" : "مستخدم"}
                         </Badge>
                       </TableCell>
 
                       <TableCell>
-                        <Badge
-                          variant={user.banned ? "destructive" : "outline"}
-                        >
-                          {user.banned ? "محظور" : "نشط"}
-                        </Badge>
+                        <Badge variant={user.banned ? "destructive" : "outline"}>{user.banned ? "محظور" : "نشط"}</Badge>
                       </TableCell>
 
                       <TableCell className="whitespace-nowrap text-muted-foreground">
@@ -305,10 +248,7 @@ export default function AdminUsersPage() {
             <p className="text-sm text-muted-foreground">
               {total === 0
                 ? "لا توجد نتائج"
-                : `عرض ${page * PAGE_SIZE + 1} إلى ${Math.min(
-                    (page + 1) * PAGE_SIZE,
-                    total,
-                  )} من ${total}`}
+                : `عرض ${page * PAGE_SIZE + 1} إلى ${Math.min((page + 1) * PAGE_SIZE, total)} من ${total}`}
             </p>
 
             <div className="flex items-center gap-2">
@@ -342,4 +282,3 @@ export default function AdminUsersPage() {
     </main>
   );
 }
-
