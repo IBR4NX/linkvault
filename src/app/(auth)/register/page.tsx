@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
-import { AuthForm } from "@/app/auth-form";
+import { AuthForm } from "@/app/(auth)/auth-form";
 import { getCurrentSession } from "@/lib/auth/auth-session";
 
 export const dynamic = "force-dynamic";
 
-export default async function LoginPage() {
+export default async function RegisterPage() {
   if (await getCurrentSession()) redirect("/dashboard");
-  return <AuthForm mode="signin" />;
+  return <AuthForm mode="signup" />;
 }
