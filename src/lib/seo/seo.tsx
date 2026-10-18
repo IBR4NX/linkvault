@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { MAIN_URL, SITE_NAME, absoluteUrl } from "@/lib/constants";
+import { SITE_URL, SITE_NAME, absoluteUrl } from "@/lib/constants";
 export { absoluteUrl };
 
 export interface SeoProps {
@@ -21,7 +21,7 @@ export function GetSEO({...props}: SeoProps): p {
 }
 
 export function createSeo({
-  baseUrl = MAIN_URL,
+  baseUrl = SITE_URL,
   canonicalPath = "/",
   ignorePath=false,
   description,
@@ -39,13 +39,13 @@ export function createSeo({
   // console.log(canonical)
   return {
     // SEO
-    metadataBase: new URL(MAIN_URL),
+    metadataBase: new URL(SITE_URL),
     title,
     description,
     keywords: generateKeywords(title, description),
     alternates: {
       canonical,
-      languages:{ar:MAIN_URL},
+      languages:{ar:SITE_URL},
     },
 
     robots: {
