@@ -1,0 +1,8 @@
+{
+  "routes": [
+    { "path": "/", "title": "LinkVault" },
+    { "path": "/login", "title": "Sign in" },
+    { "path": "/register", "title": "Create account" },
+    { "path": "/dashboard", "title": "Dashboard" }
+  ]
+}
