@@ -1,16 +1,18 @@
 "use client";
 
 import Link from "next/link";
+import React from "react";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, LockKeyhole } from "lucide-react";
 import { authClient } from "@/lib/auth/auth-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Result } from "pg";
 
 export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
   const [name, setName] = useState("");
@@ -37,6 +39,14 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
     router.push("/dashboard");
     router.refresh();
   }
+  async function withGoogle(event: React.MouseEvent) {
+    event.button = 5;
+    console.log("j")
+    const result = isSignup
+      ? await authClient.signUp
+      : await authClient.signIn.social({provider:"google"});  
+      console.log(result)
+    };
   return (
     <main className="auth-shell">
       <Card className="w-full max-w-md">
@@ -109,13 +119,18 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
             <span className="text-xs text-muted-foreground">OR</span>
             <Separator />
           </div>
-          <p className="text-center text-sm text-muted-foreground">
+          <Button onClick={withGoogle} className={'w-full'}>
+            {loading ? "Please wait…" : isSignup ? "sign up with google" : "Sign in with google"}
+          </Button>
+        </CardContent>
+        <CardFooter   >
+          <p className="text-center w-full text-sm text-muted-foreground">
             {isSignup ? "Already have an account?" : "New to LinkVault?"}{" "}
             <Link className="font-medium text-primary hover:underline" href={isSignup ? "/login" : "/register"}>
               {isSignup ? "Sign in" : "Create an account"}
             </Link>
           </p>
-        </CardContent>
+        </CardFooter>
       </Card>
     </main>
   );
