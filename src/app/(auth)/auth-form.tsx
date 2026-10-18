@@ -12,6 +12,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Result } from "pg";
 
 export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
   const [name, setName] = useState("");
@@ -43,7 +44,9 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
     console.log("j")
     const result = isSignup
       ? await authClient.signUp
-      : await authClient.signIn.social({provider:"google"});  }
+      : await authClient.signIn.social({provider:"google"});  
+      console.log(result)
+    };
   return (
     <main className="auth-shell">
       <Card className="w-full max-w-md">
