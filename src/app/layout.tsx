@@ -18,11 +18,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ar" suppressHydrationWarning className={`${readexPro.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">
+    <html lang="ar" dir="rtl" suppressHydrationWarning className={`${readexPro.variable} h-full antialiased`}>
+      <body className="min-h-full bg-amber-200 flex flex-col">
         <ThemeProvider>{children}</ThemeProvider>
-                  <Toaster />
-
+        <Toaster />
       </body>
     </html>
   );

@@ -51,9 +51,9 @@ export default async function Layout({
           <SidebarFooter></SidebarFooter>
           <SidebarRail />
         </Sidebar>
-        <SidebarInset className=" relative">
+        <SidebarInset className=" relative bg-none">
           <Header></Header>
-          <div className="  items-center justify-center    w-full h-full ">
+          <div className=" bg-none  items-center justify-center    w-full h-full ">
             {children}
             <Footer />
           </div>

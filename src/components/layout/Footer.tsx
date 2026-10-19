@@ -13,7 +13,7 @@ import MainLink from "@/components/shared/mainLink";
 import {  SITE_NAME } from "@/lib/constants";
 export default function Footer() {
   return (
-    <footer className="border-t bg-muted/30">
+    <footer className="border-t ">
       <div className="mx-aut  ma-w-7xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
         <div className="grid gap-6 grid-cols-1  lg:gap-12">
           <div dir="rtl">

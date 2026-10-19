@@ -111,46 +111,8 @@ export function LinkManager({ userName }: { userName: string }) {
     <TooltipProvider>
       <main className="dashboard-shell">
         <header className="flex items-center justify-between gap-4 py-4">
-          <div className="flex items-center gap-3">
-            <Avatar>
-              <AvatarImage src={""}/>
-              <AvatarFallback>{initials}</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="text-sm font-medium">{userName}</p>
-              <p className="text-xs text-muted-foreground">Private link library</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <Button variant="outline" size="icon" aria-label="Account menu">
-                    <MoreHorizontal className="h-4 w-4" />
-                  </Button>
-                }
-              ></DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem disabled>{userName}</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() =>
-                    authClient.signOut({
-                      fetchOptions: {
-                        onSuccess: () => {
-                          router.push("/");
-                          router.refresh();
-                        },
-                      },
-                    })
-                  }
-                >
-                  Log out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+
+
         </header>
         <Separator className="mb-8" />
         <section className="mb-8 grid gap-6 lg:grid-cols-[.8fr_1.2fr]">

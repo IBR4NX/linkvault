@@ -46,7 +46,7 @@ export function ThemeToggle() {
 export const ModeToggle = () => {
   const [loading, setLoading] = React.useState(true);
   const { setTheme, themes, theme } = useTheme();
-  
+
   const handleToggle = () => {
     const currentTheme = themes.indexOf(theme || "light");
     const nextTheme = (currentTheme + 1) % themes.length;
@@ -55,41 +55,32 @@ export const ModeToggle = () => {
   };
   React.useEffect(() => {
     async function loadTheme() {
-    setLoading(false);
+      setLoading(false);
     }
     loadTheme();
   }, []);
   if (loading) return null;
 
   return (
-        <TooltipProvider>
+    <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger render={
-
-      <Button onClick={handleToggle} variant="outline" size="icon">
-        <>
-          {theme === "system" ? (
-            <MonitorCog />
-          ) : theme === "dark" ? (
-            <Sun />
-          ) : (
-            <Moon />
-          )}
-        </>
-      </Button>
-          }>
-        </TooltipTrigger>
+        <TooltipTrigger
+          render={
+            <Button onClick={handleToggle} variant="outline" size="icon">
+              <>{theme === "system" ? <MonitorCog /> : theme === "dark" ? <Sun /> : <Moon />}</>
+            </Button>
+          }
+        ></TooltipTrigger>
         <TooltipContent>{theme === "dark" ? "Use light mode" : "Use dark mode"}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
 };
 
-type ColorTheme ="default"| "violet" | "pink" | "sky"|"amber";
+type ColorTheme = "default" | "violet" | "pink" | "sky" | "amber";
 const colors: ColorTheme[] = ["default", "violet", "pink", "sky", "amber"];
 
-const isColorTheme = (value: string): value is ColorTheme =>
-  colors.includes(value as ColorTheme);
+const isColorTheme = (value: string): value is ColorTheme => colors.includes(value as ColorTheme);
 
 export function ColorToggle() {
   const [loading, setLoading] = React.useState(true);
@@ -114,7 +105,7 @@ export function ColorToggle() {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button  size="icon">
+          <Button size="icon">
             <>
               <Palette className="h-[1.2rem] w-[1.2rem]" />
             </>

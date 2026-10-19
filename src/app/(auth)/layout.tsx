@@ -1,29 +1,32 @@
-"use client"
-import MainLink from "@/components/shared/mainLink";
+"use client";
 import { Button } from "@/components/ui/button";
 import { SITE_NAME } from "@/lib/constants";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export default function AuthLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <>
-      <div className=" min-h-svh w-full items-center justify-center  md:p-10">
-        <div className="fixed top-0 backdrop-blur-[6px] flex justify- items-center p-2  left-0 right-0 z-50">
+      <div className=" min-h-148 h-svh w-full   relative  items-center justify-center  md:p-10">
+        <div
+          dir="rtl"
+          className="fixed top-0 backdrop-blur-[6px] flex justify- items-center p-2 gap-4 left-0 right-0 z-50"
+        >
           <Button
             onClick={() => window.history.back()}
             type="button"
-            variant="ghost"
+            variant="link"
             size="icon"
             className="text-muted-foreground hover:bg-transparent"
           >
             <ArrowRight className=" size-6" />
           </Button>
-          <MainLink href="/" className="text-lg font-semibold tracking-tight">
+          <Link href="/" className="text-lg font-semibold tracking-tight">
             {SITE_NAME}
-          </MainLink>
+          </Link>
         </div>
 
-        <div className="w-full m-auto mt-20 max-w-sm">{children}</div>
+        <div className=" m-auto h-fit absolute left-0 right-0  top-0 bottom-0   w-sm">{children}</div>
       </div>
     </>
   );

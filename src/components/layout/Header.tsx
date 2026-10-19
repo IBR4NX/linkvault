@@ -4,8 +4,7 @@ import React from "react";
 import { ColorToggle, ModeToggle } from "@/components/theme/themeToggle";
 import { motion, useScroll, useMotionValueEvent } from "motion/react";
 import SideTrigger from "./toggles/side-trigger";
-import { Link } from "lucide-react";
-import MainLink from "../shared/mainLink";
+import  Link  from "next/link";
 import { SITE_NAME } from "@/lib/constants";
 export function Header({ children, className }: React.ComponentProps<"div">) {
   const [isTop, setIsTop] = React.useState(true);
@@ -14,7 +13,6 @@ export function Header({ children, className }: React.ComponentProps<"div">) {
 
   useMotionValueEvent(scrollY, "change", (current) => {
     const previous = scrollY.getPrevious() ?? 0;
-    // console.log(current - previous);
     if (current > previous && current > 500) {
       setHidden(true);
     } else if (hidden) {
@@ -29,7 +27,7 @@ export function Header({ children, className }: React.ComponentProps<"div">) {
 
   return (
     <div className=" top-0 sticky w-full left-0 right-0 h-fit">
-      <motion.header
+      <motion.header dir="rtl"
         className={cn(
           "bg-card fikxed w-full z-20 top-0 inset-x-0 flex shrink-0 items-center gap-2 border-b  p-2 px-4 transition-all duration-300",
           className,
@@ -45,9 +43,9 @@ export function Header({ children, className }: React.ComponentProps<"div">) {
         //{...props}
       >
         <SideTrigger />
-        <MainLink href="/" className="text-lg font-semibold tracking-tight">
+        <Link href="/" className="text-lg font-semibold tracking-tight">
           {SITE_NAME}
-        </MainLink>
+        </Link>
         {children}
         <div className="mr-auto flex gap-2 items-center ">
           <ColorToggle />
