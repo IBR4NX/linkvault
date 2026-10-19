@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const PAGE_SIZE = 10;
 
@@ -104,8 +105,6 @@ export default function AdminUsersPage() {
   return (
     <main className="space-y-6 p-4 md:p-6" dir="rtl">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-
-
         <Badge variant="secondary" className="w-fit gap-2 px-3 py-1.5">
           <Users className="size-4" />
           {total} مستخدم
@@ -141,18 +140,26 @@ export default function AdminUsersPage() {
               />
             </div>
 
-            <select
-              value={searchField}
-              onChange={(event) => {
-                setSearchField(event.target.value as "name" | "email");
+            <Select
+              items={[
+                { label: "الاسم", value: "name" },
+                { label: "البريد الإلكتروني", value: "email" },
+              ]}
+              onValueChange={(event) => {
+                setSearchField(event as "name" | "email");
                 setPage(0);
               }}
-              aria-label="حقل البحث"
-              className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+              value={searchField}
             >
-              <option value="name">الاسم</option>
-              <option value="email">البريد الإلكتروني</option>
-            </select>
+              <SelectTrigger>
+
+              <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="name">الاسم</SelectItem>
+                <SelectItem value="email">البريد الإلكتروني</SelectItem>
+              </SelectContent>
+            </Select>
 
             <Button type="submit" variant="secondary">
               بحث
@@ -211,7 +218,7 @@ export default function AdminUsersPage() {
                       <TableCell>
                         <div className="flex min-w-52 items-center gap-3">
                           <Avatar>
-                            <AvatarImage src={user.image ?? undefined} alt={user.name} />
+                            <AvatarImage loading="lazy" src={user.image ?? undefined} alt={user.name} />
                             <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
                           </Avatar>
 

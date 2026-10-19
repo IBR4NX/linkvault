@@ -16,10 +16,10 @@ export const metadata: Metadata = {
   description: "Save the web in one calm, private place.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning className={`${readexPro.variable} h-full antialiased`}>
-      <body className="min-h-full bg-amber-200 flex flex-col">
+      <body className="min-h-full bg-background transition-colors duration-300 flex flex-col">
         <ThemeProvider>{children}</ThemeProvider>
         <Toaster />
       </body>

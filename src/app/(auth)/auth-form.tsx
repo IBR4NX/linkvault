@@ -4,7 +4,6 @@ import Link from "next/link";
 import React from "react";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { LockKeyhole } from "lucide-react";
 import { authClient } from "@/lib/auth/auth-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,7 +11,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { FaGoogle } from "react-icons/fa6";
 import { useSlideIn, motion } from "@/hooks/use-slide-in";
 
 export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
@@ -38,7 +36,7 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
       setError(result.error.message || "Authentication failed.");
       return;
     }
-    router.push("/dashboard");
+    router.push("/account");
     router.refresh();
   }
   async function withGoogle(event: React.MouseEvent) {
@@ -58,8 +56,8 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
     duration: 0.5,
   });
   return (
-    <motion.div {...animation}>
-      <Card dir="rtl" className="w-ful max-w-sm">
+    <motion.div {...animation} className="flex flex-col items-center justify-center w-full h-full">
+      <Card dir="rtl" className="w-full max-w-sm">
         <CardHeader className="space-y-  justify-center items-center">
           <div className="flex m-auto mb-6 h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground">
             <img src="/icons/icons8_privacy.ico" alt="Google Icon" width={20} height={20} />

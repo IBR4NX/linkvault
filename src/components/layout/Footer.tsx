@@ -11,6 +11,7 @@ import { ModeToggle,ColorToggle } from "@/components/theme/themeToggle";
 import LinkFooter from "@/components/layout/LinkFooter";
 import MainLink from "@/components/shared/mainLink";
 import {  SITE_NAME } from "@/lib/constants";
+import Link from "next/link";
 export default function Footer() {
   return (
     <footer className="border-t ">
@@ -18,9 +19,9 @@ export default function Footer() {
         <div className="grid gap-6 grid-cols-1  lg:gap-12">
           <div dir="rtl">
             <div className="mt-8 flex justify-between   gap-2">
-              <MainLink href="/prices" className="text-3xl font-bold">
+              <Link href="/#top" className="text-3xl font-bold">
                 {SITE_NAME}
-              </MainLink>
+              </Link>
               <div className="mr-auto flex gap-2 items-center ">
                 <ColorToggle />
                 <ModeToggle />

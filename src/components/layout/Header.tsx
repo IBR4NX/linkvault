@@ -26,10 +26,10 @@ export function Header({ children, className }: React.ComponentProps<"div">) {
   });
 
   return (
-    <div className=" top-0 sticky w-full left-0 right-0 h-fit">
+    <div className=" top-0 sticky w-full z-50 left-0 right-0 h-fit">
       <motion.header dir="rtl"
         className={cn(
-          "bg-card fikxed w-full z-20 top-0 inset-x-0 flex shrink-0 items-center gap-2 border-b  p-2 px-4 transition-all duration-300",
+          "bg-card fikxed w-full top-0 inset-x-0 flex shrink-0 items-center gap-2 border-b  p-2 px-4 transition-all duration-300",
           className,
           !isTop && "drop-shadow-md/25",
           "drop-shadow-foreground",
