@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   title: "LinkVault — Your private link library",
   description: "Save the web in one calm, private place.",
 };
-
+ 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning className={`${readexPro.variable} h-full antialiased`}>

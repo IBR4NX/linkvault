@@ -10,6 +10,7 @@
 !.yarn/releases
 !.yarn/versions
 .env
+private
 # testing
 /coverage
 note.md
