@@ -4,8 +4,9 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { Observer } from "gsap/Observer";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(Observer, ScrollTrigger);
 
 type ScrollSceneProps = {
   children: React.ReactNode;
@@ -82,8 +83,6 @@ export function Scroll({ children, className = "", pinDistance = 2000 }: ScrollS
     </div>
   );
 }
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-// تأكد من تسجيل الإضافات (Plugins)
 
 export function ScrollScene({ children, className = "" }: ScrollSceneProps) {
   const sceneRef = useRef<HTMLDivElement>(null);
@@ -146,9 +145,10 @@ export function ScrollScene({ children, className = "" }: ScrollSceneProps) {
       // 4. مراقب اللمس والماوس للاستجابة الفورية من أول مليمتر
       ScrollTrigger.observe({
         target: sceneRef.current,
-        type: "wheel",
+
+        type: "wheel,touch,pointer",
         tolerance: 10, // يستجيب لأقل حركة (10 بكسل فقط)
-        onDown: (self) => {
+        onUp: (self) => {
           if (!st.isActive) return;
 
           // إذا لم نصل لآخر قسم، امنع سكرول الصفحة العادي وانتقل للقسم التالي فوراً
@@ -160,7 +160,7 @@ export function ScrollScene({ children, className = "" }: ScrollSceneProps) {
           }
           // أما إذا كنا في آخر قسم، سيسمح للصفحة بالنزول بشكل طبيعي لباقي الموقع!
         },
-        onUp: (self) => {
+        onDown: (self) => {
           if (!st.isActive) return;
 
           // إذا لم نكن في أول قسم، امنع سكرول الصفحة العادي وارجع للقسم السابق فوراً

@@ -1,16 +1,10 @@
 "use client";
-import {
-  FaFacebook,
-  FaGithub,
-  FaInstagram,
-  FaWhatsapp,
-  FaXTwitter,
-} from "react-icons/fa6";
-import { ModeToggle,ColorToggle } from "@/components/theme/themeToggle";
+import { FaFacebook, FaGithub, FaInstagram, FaWhatsapp, FaXTwitter } from "react-icons/fa6";
+import { ModeToggle, ColorToggle } from "@/components/theme/themeToggle";
 
 import LinkFooter from "@/components/layout/LinkFooter";
 import MainLink from "@/components/shared/mainLink";
-import {  SITE_NAME } from "@/lib/constants";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import Link from "next/link";
 export default function Footer() {
   return (
@@ -27,49 +21,32 @@ export default function Footer() {
                 <ModeToggle />
               </div>
             </div>
-            <p className="mt-3 max-w-sm text-sm leading-7 text-muted-foreground">{"DESCRIPTION"}            </p>
+            <p className="mt-3 max-w-sm text-sm leading-7 text-muted-foreground">{"DESCRIPTION"} </p>
           </div>
           <div className="relative  grid grid-cols-1 gap-4 sm:grid-cols-2 ">
             <div className="  w-full">
               <h2 className="text- font-semibold"> روابط</h2>
               <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 text-muted-foreground">
-                <MainLink rel="nofollow"
-                  href={'/#about'}
-                  className="w-fit hover:text-foreground hover:underline"
-                >
+                <MainLink rel="nofollow" href={"/#about"} className="w-fit hover:text-foreground hover:underline">
                   من نحن
                 </MainLink>
-                <MainLink
-                  href="/#help"
-                  className="w-fit hover:text-foreground hover:underline"
-                >
+                <MainLink href="/#help" className="w-fit hover:text-foreground hover:underline">
                   مركز المساعدة
                 </MainLink>
-                <MainLink
-                  href="/#privacy-policy"
-                  className="w-fit hover:text-foreground hover:underline"
-                >
+                <MainLink href="/#privacy-policy" className="w-fit hover:text-foreground hover:underline">
                   سياسة الخصوصية
                 </MainLink>
-                <MainLink
-                  href="/#contact"
-                  className="w-fit hover:text-foreground hover:underline"
-                >
+                <MainLink href="/#contact" className="w-fit hover:text-foreground hover:underline">
                   اتصل بنا
                 </MainLink>
-                <MainLink
-                  href="/#faq"
-                  className="w-fit hover:text-foreground hover:underline"
-                >
+                <MainLink href="/#faq" className="w-fit hover:text-foreground hover:underline">
                   الأسئلة الشائعة
                 </MainLink>
               </div>
             </div>
 
             <div className="mt-6">
-              <h2 className="text-lg text-muted-foreground  text-center  font-semibold">
-                تابعنا
-              </h2>
+              <h2 className="text-lg text-muted-foreground  text-center  font-semibold">تابعنا</h2>
               <div className="mt-4 max-w-xl text-4xl flex flex-wrap justify-around items-center gap-3 text-muted-foreground">
                 <a
                   href="https://www.facebook.com/ibr4nx"
@@ -112,8 +89,17 @@ export default function Footer() {
         </div>
 
         <div className=" relative -bottom-4 flex flex-col gap-3 border- -5 text-center text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:text-start">
-          <p>طور بواسطة ابراهيم المخلافي</p>
-          <p>{`© ${new Date().getFullYear()} ${SITE_NAME}. جميع الحقوق محفوظة.`}</p>
+          <p className="">
+            {`جميع الحقوق محفوظة `}
+            <Link href={SITE_URL}>
+              <strong>ل{SITE_NAME} </strong>
+            </Link>
+            {`© ${new Date().getFullYear()}.`}
+            {` بواسطة `}
+            <a href={"https://ibrahim.ibovs.com"}>
+              <strong>{`ابراهيم المخلافي`}</strong>
+            </a>
+          </p>
         </div>
       </div>
     </footer>

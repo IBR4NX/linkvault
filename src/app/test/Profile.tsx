@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 import { useGSAP } from "@gsap/react";
-export default function ScrollScene() {
+export default function Profile() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -26,15 +26,19 @@ export default function ScrollScene() {
         .timeline({
           scrollTrigger: {
             trigger: ".intro",
-            start: "top top",
-            toggleActions: "play none none reverse",
+            start: "top+=200 top",
+            toggleActions: "play none none none",
             markers: true,
           },
         })
-        .to(".title", {
-          y: -100,
-          scale: 0.8,
-        })
+        .fromTo(
+          ".title",
+          { y: 0 },
+          {
+            y: -100,
+            scale: 0.8,
+          },
+        )
         .fromTo(
           ".description",
           {
@@ -54,10 +58,9 @@ export default function ScrollScene() {
         .timeline({
           scrollTrigger: {
             trigger: ".about",
-            start: "top top+=0",
+            start: "top+=200 top",
             markers: true,
-
-            toggleActions: "none play none reverse",
+            toggleActions: "play none none none",
           },
         })
         .to(".intro", { autoAlpha: 0, y: -150, scale: 0.5, delay: 0.3 })
