@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
@@ -15,15 +15,18 @@ export default function ScrollScene() {
           trigger: sectionRef.current,
           start: "top top",
           pin: true,
-          end: "+=1500",
+          end: "+=2500",
         },
+      });
+      gsap.defaults({
+        duration: 0.5,
       });
 
       gsap
         .timeline({
           scrollTrigger: {
-            trigger: ".title",
-            start: "top 20%",
+            trigger: ".intro",
+            start: "top top",
             toggleActions: "play none none reverse",
             markers: true,
           },
@@ -31,7 +34,6 @@ export default function ScrollScene() {
         .to(".title", {
           y: -100,
           scale: 0.8,
-          duration: 1,
         })
         .fromTo(
           ".description",
@@ -44,7 +46,6 @@ export default function ScrollScene() {
             autoAlpha: 1,
             y: 0,
             scale: 1,
-            duration: 1,
           },
           "<",
         );
@@ -52,60 +53,31 @@ export default function ScrollScene() {
       gsap
         .timeline({
           scrollTrigger: {
-            trigger: ".description",
-            start: "top 20%",
-            toggleActions: "play none reverse none ",
+            trigger: ".about",
+            start: "top top+=0",
             markers: true,
+
+            toggleActions: "none play none reverse",
           },
         })
-        .to(".title", { alpha: 0, y: -150, scale: 0.5, delay: 1 })
-        .to(".description", { alpha: 0, y: -100, scale: 0.5 }, "<");
-      // .to(".scene-card", {
-      //   scale: 1,
-      //   opacity: 1,
-      //   y: 0,
-      //   stagger: {
-      //     each: 0.3,
-      //     from: "center",
-      //   },
-      // });
+        .to(".intro", { autoAlpha: 0, y: -150, scale: 0.5, delay: 0.3 })
+        // .to(".description", { autoAlpha: 0, y: -100, scale: 0.5 }, "<")
 
-      gsap.utils.toArray<HTMLElement>(".hh").forEach((el, index) => {
-        gsap.fromTo(
-          el,
-          { autoAlpha: 0.5, y: (index + 1) * 50, scale: 0.5 },
+        .fromTo(
+          ".about",
+          {
+            autoAlpha: 0,
+            y: 100,
+            scale: 1.2,
+          },
           {
             autoAlpha: 1,
-            y: 1,
+            y: -100,
             scale: 1,
-            duration: 2,
-            delay: index * 0.2,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 50%",
-              toggleActions: "restart none none reverse",
-            },
+            delay: 0.2,
           },
+          "<",
         );
-      });
-      // gsap.fromTo(
-      //   "description",
-      //   { autoAlpha: 0.5, y: 50, scale: 0.5 },
-      //   {
-      //     autoAlpha: 1,
-      //     y: 1,
-      //     scale: 1,
-      //     duration: 2,
-      //     ease: "power3.out",
-      //     scrollTrigger: {
-      //       trigger: sectionRef.current,
-      //       start: "top 50%",
-      //       toggleActions: "restart none none reverse",
-      //     },
-      //   },
-      // );
-
       requestAnimationFrame(() => ScrollTrigger.refresh());
     },
     { scope: sectionRef, revertOnUpdate: true },
@@ -116,20 +88,81 @@ export default function ScrollScene() {
       <div>
         <section
           ref={sectionRef}
-          className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#080b16] text-white"
+          className="relative flex flex-col min-h-screen items-center justify-center overflow-hidden bg-[#080b16] text-white"
         >
+          <section className="intro absolute   flex-col inset-0 flex items-center justify-center  text-white">
+            <div className="title text-center">
+              <p className="mb-4 text-sm tracking-[0.4em] text-blue-300">Software Engineer</p>
+
+              <h2 className="text-3xl font-bold md:text-7xl">Ibrahim Al-Mekhlafi</h2>
+            </div>
+
+            <p className="description  max-w-2xl p-4 text-center text-md text-gray-400 opa">
+              Building software with purpose. I build modern web applications, desktop software, and organized systems
+              with a focus on clean code, performance, and maintainability.
+            </p>
+          </section>
+          <section className="about absolute  flex-col inset-0 flex items-center justify-center  text-white">
+            <div className="about-title  pb-10 text-center">
+              <p className="mb-4 text-sm tracking-[0.4em] text-blue-300">WHAT I DO</p>
+              <h2 className=" text-3xl font-bold md:text-5xl">Turning Ideas Into Reality</h2>
+            </div>
+            <p className="about-description  max-w-2xl p-4 text-center text-md text-gray-400 opa">
+              I'm a software developer who enjoys solving problems and building software that is simple, efficient, and
+              easy to maintain. I focus on understanding the root cause of problems, writing clean code, and creating
+              solutions that can grow and evolve over time.
+            </p>
+          </section>
+        </section>
+        import ScrollSection from "@/components/scroll-section";
+        <ScrollSection className="bg-[#080b16] text-white">
           <div className="title absolute pb-10 text-center">
             <p className="mb-4 text-sm tracking-[0.4em] text-blue-300">Software Engineer</p>
 
             <h2 className="text-3xl font-bold md:text-7xl">Ibrahim Al-Mekhlafi</h2>
           </div>
 
-          <p className="description absolute max-w-2xl p-4 text-center text-md text-gray-400 opa">
+          <p className="description absolute max-w-2xl p-4 text-center text-gray-400 opacity-0">
             Building software with purpose. I build modern web applications, desktop software, and organized systems
             with a focus on clean code, performance, and maintainability.
           </p>
-        </section>
+        </ScrollSection>
       </div>
     </>
+  );
+}
+
+type ScrollSectionProps = {
+  children: React.ReactNode;
+  className?: string;
+  pin?: boolean;
+  pinDistance?: number;
+};
+
+export function ScrollSection({ children, className = "", pin = true, pinDistance = 1500 }: ScrollSectionProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (!pin) return;
+
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top top",
+        end: `+=${pinDistance}`,
+        pin: true,
+        pinSpacing: true,
+      });
+    },
+    { scope: sectionRef },
+  );
+
+  return (
+    <section
+      ref={sectionRef}
+      className={`relative flex min-h-screen items-center justify-center overflow-hidden ${className}`}
+    >
+      {children}
+    </section>
   );
 }
