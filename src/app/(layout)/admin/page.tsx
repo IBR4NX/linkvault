@@ -236,18 +236,18 @@ export function CardAnalytics({
   ...props
 }: PropsCardAnalytics & ComponentPropsWithoutRef<typeof Card>) {
   return (
-    <Card className="via-card to-card space-y-0" key={item.title}>
+    <Card className="via-card to-card gap-y-1" key={item.title}>
       <CardHeader className="  ">
-        <CardTitle>{item.title}</CardTitle>
-        {/* <CardDescription className="text-sm font-medium text-muted-foreground"></CardDescription> */}
+        <CardDescription className="text-sm">{item.title}</CardDescription>
+        {/* <CardDescription className="text-sm font-medium "></CardDescription> */}
 
+        {item.value !== undefined && <CardTitle className=" text-2xl">{numberFormatter.format(item.value)}</CardTitle>}
         <CardAction className="flex size-10 items-center justify-center rounded-lg bg-foreground text-background">
           <item.icon className="size-5 " />
         </CardAction>
       </CardHeader>
 
       <CardContent className="space-y-1">
-        {item.value !== undefined && <CardTitle>{numberFormatter.format(item.value)}</CardTitle>}
         {item.description && <p className="text-xs text-muted-foreground">{item.description}</p>}
       </CardContent>
     </Card>

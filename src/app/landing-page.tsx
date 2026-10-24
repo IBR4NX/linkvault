@@ -20,7 +20,7 @@ export default function IntroPage() {
       {/* Background texture */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 opacity-[0.08] bg-[radial-gradient(#fff_0.7px,transparent_0.7px)] [background-size:7px_7px]"
+        className="absolute inset-0 -z-10 opacity-[0.08] bg-[radial-gradient(#fff_0.7px,transparent_0.7px)] bg-size-[7px_7px]"
       />
 
       {/* Header */}
@@ -84,7 +84,7 @@ export default function IntroPage() {
             {cities.map((city) => (
               <span
                 key={city}
-                className="rounded-lg border border-white/15 bg-white/[0.06] px-4 py-2 text-xs text-white/80 backdrop-blur-sm sm:text-sm"
+                className="rounded-lg border border-white/15 bg-white/6 px-4 py-2 text-xs text-white/80 backdrop-blur-sm sm:text-sm"
               >
                 {city}
               </span>
@@ -155,7 +155,7 @@ export default function IntroPage() {
         <div className="absolute inset-x-0 bottom-0 h-[8%] bg-[#292a22]" />
 
         {/* Fade into content */}
-        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-[#263a30]/20" />
+        <div className="absolute inset-0 bg-linear-to-t from-transparent via-transparent to-[#263a30]/20" />
       </div>
 
       {/* Footer */}

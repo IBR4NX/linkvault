@@ -1,10 +1,10 @@
 "use client";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 import React from "react";
 import { ColorToggle, ModeToggle } from "@/components/theme/themeToggle";
 import { motion, useScroll, useMotionValueEvent } from "motion/react";
 import SideTrigger from "./toggles/side-trigger";
-import  Link  from "next/link";
+import Link from "next/link";
 import { SITE_NAME } from "@/lib/constants";
 export function Header({ children, className }: React.ComponentProps<"div">) {
   const [isTop, setIsTop] = React.useState(true);
@@ -27,7 +27,8 @@ export function Header({ children, className }: React.ComponentProps<"div">) {
 
   return (
     <div className=" top-0 sticky w-full z-50 left-0 right-0 h-fit">
-      <motion.header dir="rtl"
+      <motion.header
+        dir="rtl"
         className={cn(
           "bg-card fikxed w-full top-0 inset-x-0 flex shrink-0 items-center gap-2 border-b  p-2 px-4 transition-all duration-300",
           className,

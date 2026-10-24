@@ -10,6 +10,8 @@ import { NavUser } from "@/components/layout/nav/nav-user";
 import { IconAlarm, IconHelp, IconHome, IconSearch, IconSettings } from "@tabler/icons-react";
 import { NavSecondary } from "@/components/layout/nav/nav-secondary";
 import { AdminNavigation } from "@/components/layout/nav/nav-admin";
+import AppBreadcrumb from "@/components/layout/AppBreadcrumb";
+
 export default async function Layout({
   children,
 }: Readonly<{
@@ -43,6 +45,7 @@ export default async function Layout({
         </Sidebar>
         <SidebarInset className=" relative bg-transparent">
           <Header></Header>
+          <AppBreadcrumb className="px-2" />
           <div className="items-center justify-center    w-full h-full ">
             {children}
             <Footer />
