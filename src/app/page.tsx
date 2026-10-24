@@ -4,6 +4,7 @@ import { ArrowLeft, MapPin, TrendingUp, Building2, Store, Layers, ShieldCheck } 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { redirect } from "next/navigation";
+import { SITE_NAME } from "@/lib/constants";
 
 const cities = [
   { name: "صنعاء", type: "العاصمة الإدارية" },
@@ -12,7 +13,7 @@ const cities = [
 ];
 
 export default function IntroPage() {
-  redirect("https://prices.ibovs.com");
+  redirect("/test");
   return (
     <main
       dir="rtl"
@@ -86,7 +87,7 @@ export default function IntroPage() {
           <ShieldCheck className="size-4 text-amber-400" />
           <span>جميع البيانات مستمدة من أسواق التجزئة والجملة المحلية.</span>
         </div>
-        <span>أسعار اليمن &copy; {new Date().getFullYear()}</span>
+        <span>{SITE_NAME} &copy; {new Date().getFullYear()}</span>
       </footer>
     </main>
   );

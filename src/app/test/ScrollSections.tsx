@@ -2,19 +2,26 @@
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { Observer } from "gsap/Observer";
-gsap.registerPlugin(Observer);
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
+gsap.registerPlugin(Observer,ScrollTrigger);
 const sections = [
   { title: "Discover", color: "bg-blue-950" },
   { title: "Explore", color: "bg-emerald-950" },
   { title: "Create", color: "bg-orange-950" },
 ];
-export default function ScrollSections() {
+type ScrollSceneProps = {
+  children?: React.ReactNode;
+  className?: string;
+  elementsClassName?: string;
+};
+export function ScrollSections({ children, className = "", elementsClassName = ".scroll-content" }: ScrollSceneProps) {
   const containerRef = useRef(null);
   useLayoutEffect(() => {
     const container = containerRef.current;
     if (!container) return;
     const ctx = gsap.context(() => {
-      const elements = gsap.utils.toArray<HTMLElement>(".page-section");
+      const elements = gsap.utils.toArray<HTMLElement>(elementsClassName);
 
       let currentIndex = 0;
       let animating = false;
@@ -81,7 +88,7 @@ export default function ScrollSections() {
         target: container,
         type: "wheel,touch",
         wheelSpeed: -1,
-        tolerance: 15,
+        tolerance: 100,
         preventDefault: true,
         onUp: () => gotoSection(currentIndex + 1, 1),
         onDown: () => gotoSection(currentIndex - 1, -1),
@@ -93,17 +100,39 @@ export default function ScrollSections() {
     return () => ctx.revert();
   }, []);
   return (
-    <main>
-      {sections.map((section, index) => (
+    <section ref={containerRef} className=" overflow-hidden h-svh">
+      {children}
+      {/* {sections.map((section, index) => (
         <section
           key={section.title}
-          className={`page-section absolute inset-0 flex items-center justify-center ${section.color}`}
+          className={`pageSection absolute inset-0 flex flex-col items-center justify-center ${section.color}`}
         >
           {String(index + 1).padStart(2, "0")} / {String(sections.length).padStart(2, "0")}
           <h1 className="text-6xl font-black tracking-tight sm:text-8xl md:text-9xl">{section.title}</h1>
-          <p className="mt-6 text-sm text-white/60">Scroll to continue</p>
         </section>
-      ))}
-    </main>
+      ))} */}
+    </section>
+  );
+}
+type ScrollContentProps = {
+  title: string;
+  description: string;
+  className?: string;
+  id: string;
+  to: string;
+};
+
+export function ScrollContent({id,to, title, description, className = "" }: ScrollContentProps) {
+  return (
+    <div id={id}
+      className={`scroll-content absolute inset-0 flex flex-col items-center justify-center text-center ${className}`}
+    >
+      <h2 className="mb-4 text-3xl font-bold md:text-7xl">{title}</h2>
+
+      <p className="mx-auto max-w-2xl p-4 text-gray-400">{description}</p>
+      <Link href={`#${to}`} className="absolute animate-bounce bottom-20 text-primary/60">
+        <p className="   animate-pulse text-sm">Scroll to continue</p>
+      </Link>
+    </div>
   );
 }

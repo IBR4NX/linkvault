@@ -13,8 +13,8 @@ const readexPro = Readex_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "دليل السوق",
-  applicationName: "د",
+  title: "موقعك  ",
+  applicationName: "موقعك",
   appleWebApp: {
     title: "ibrahim Al-Mekhlafi",
   },
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  redirect('https://prices.ibovs.com')
+  // redirect('https://prices.ibovs.com')
   return (
     <html
       lang="ar"

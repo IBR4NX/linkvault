@@ -58,9 +58,9 @@ export default function Profile() {
         .timeline({
           scrollTrigger: {
             trigger: ".about",
-            start: "top+=200 top",
+            start: "top+=500 top",
             markers: true,
-            toggleActions: "play none none none",
+            toggleActions: "play none none re",
           },
         })
         .to(".intro", { autoAlpha: 0, y: -150, scale: 0.5, delay: 0.3 })
@@ -101,8 +101,7 @@ export default function Profile() {
             </div>
 
             <p className="description  max-w-2xl p-4 text-center text-md text-gray-400 opa">
-              Building software with purpose. I build modern web applications, desktop software, and organized systems
-              with a focus on clean code, performance, and maintainability.
+              
             </p>
           </section>
           <section className="about absolute  flex-col inset-0 flex items-center justify-center  text-white">
