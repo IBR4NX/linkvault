@@ -1,4 +1,3 @@
-import Profile from "./Profile";
 import { ScrollSections, ScrollContent } from "./ScrollSections";
 
 export default function Home() {
