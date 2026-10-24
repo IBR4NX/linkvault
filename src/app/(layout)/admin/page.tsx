@@ -4,6 +4,7 @@ import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle }
 
 import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/lib/prisma";
+import { ComponentPropsWithoutRef } from "react";
 
 const numberFormatter = new Intl.NumberFormat("ar");
 
@@ -21,66 +22,67 @@ export default async function AdminPage() {
   const lastWeek = new Date(now);
   lastWeek.setDate(lastWeek.getDate() - 7);
 
-  const [totalUsers, totalLinks, newUsers, todayLinks, bannedUsers, recentUsers, recentLinks] = await Promise.all([
-    prisma.user.count(),
-
-    prisma.link.count(),
-
-    prisma.user.count({
-      where: {
-        createdAt: {
-          gte: lastWeek,
-        },
-      },
-    }),
-
-    prisma.link.count({
-      where: {
-        createdAt: {
-          gte: startOfToday,
-        },
-      },
-    }),
-
-    prisma.user.count({
-      where: {
-        banned: true,
-      },
-    }),
-
-    prisma.user.findMany({
-      take: 5,
-      orderBy: {
-        createdAt: "desc",
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        createdAt: true,
-      },
-    }),
-
-    prisma.link.findMany({
-      take: 5,
-      orderBy: {
-        createdAt: "desc",
-      },
-      select: {
-        id: true,
-        title: true,
-        url: true,
-        createdAt: true,
-        user: {
-          select: {
-            name: true,
-            email: true,
+  const [totalUsers, newUsers, bannedUsers, recentUsers, totalGoogle, totalCredential, todayAccounts, recentLinks] =
+    await Promise.all([
+      prisma.user.count(),
+      prisma.user.count({
+        where: {
+          createdAt: {
+            gte: lastWeek,
           },
         },
-      },
-    }),
-  ]);
+      }),
+      prisma.user.count({
+        where: {
+          banned: true,
+        },
+      }),
+
+      prisma.user.findMany({
+        take: 5,
+        orderBy: {
+          createdAt: "desc",
+        },
+        select: {
+          id: true,
+          image: true,
+          name: true,
+          email: true,
+          role: true,
+          emailVerified: true,
+          createdAt: true,
+        },
+      }),
+
+      prisma.account.count({ where: { providerId: "google" } }),
+      prisma.account.count({ where: { providerId: "credential" } }),
+      prisma.session.count({
+        where: {
+          createdAt: {
+            gte: startOfToday,
+          },
+        },
+      }),
+
+      prisma.link.findMany({
+        take: 5,
+        orderBy: {
+          createdAt: "desc",
+        },
+        select: {
+          id: true,
+          title: true,
+          url: true,
+          createdAt: true,
+          user: {
+            select: {
+              name: true,
+              email: true,
+            },
+          },
+        },
+      }),
+    ]);
 
   const stats = [
     {
@@ -216,12 +218,8 @@ export default async function AdminPage() {
     </main>
   );
 }
-
-export function CardAnalytics({
-  item,
-  children,
-  ...props
-}: {
+interface PropsCardAnalytics {
+  className?: string;
   item: {
     title: string;
     url?: string;
@@ -229,19 +227,27 @@ export function CardAnalytics({
     value?: number;
     description?: string;
   };
-} & React.ComponentPropsWithoutRef<typeof Card>) {
-  return (
-    <Card className="bg-linear-to-br from-primary/5 via-card to-card" key={item.title}>
-      <CardHeader className="flex flex-row items-center justify-between gap-4 pb-2">
-        <CardDescription className="text-sm font-medium text-muted-foreground">{item.title}</CardDescription>
+}
 
-        <CardAction>
-          <item.icon className="size-5 text-muted-foreground" />
+export function CardAnalytics({
+  item,
+  children,
+  className,
+  ...props
+}: PropsCardAnalytics & ComponentPropsWithoutRef<typeof Card>) {
+  return (
+    <Card className="via-card to-card space-y-0" key={item.title}>
+      <CardHeader className="  ">
+        <CardTitle>{item.title}</CardTitle>
+        {/* <CardDescription className="text-sm font-medium text-muted-foreground"></CardDescription> */}
+
+        <CardAction className="flex size-10 items-center justify-center rounded-lg bg-foreground text-background">
+          <item.icon className="size-5 " />
         </CardAction>
-        {item.value !== undefined && <CardTitle>{numberFormatter.format(item.value)}</CardTitle>}
       </CardHeader>
 
       <CardContent className="space-y-1">
+        {item.value !== undefined && <CardTitle>{numberFormatter.format(item.value)}</CardTitle>}
         {item.description && <p className="text-xs text-muted-foreground">{item.description}</p>}
       </CardContent>
     </Card>
