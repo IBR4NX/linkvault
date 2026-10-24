@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme/theme-provider";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toast";
 import { cn } from "@/utils/cn";
+import { redirect } from "next/navigation";
 
 const readexPro = Readex_Pro({
   subsets: ["arabic", "latin"],
@@ -23,6 +24,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
+  redirect('https://prices.ibovs.com')
   return (
     <html
       lang="ar"

@@ -1,10 +1,11 @@
-import { IconUsers, IconLink, IconUserPlus, IconUserOff, IconClock, IconExternalLink, Icon } from "@tabler/icons-react";
+import { IconUsers, IconLink, IconUserPlus, IconUserOff, IconClock, IconExternalLink, Icon, IconCheck, IconBrandGoogle, IconMail } from "@tabler/icons-react";
 
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/lib/prisma";
 import { ComponentPropsWithoutRef } from "react";
+import { cn } from "@/utils/cn";
 
 const numberFormatter = new Intl.NumberFormat("ar");
 
@@ -22,98 +23,133 @@ export default async function AdminPage() {
   const lastWeek = new Date(now);
   lastWeek.setDate(lastWeek.getDate() - 7);
 
-  const [totalUsers, newUsers, bannedUsers, recentUsers, totalGoogle, totalCredential, todayAccounts, recentLinks] =
-    await Promise.all([
-      prisma.user.count(),
-      prisma.user.count({
-        where: {
-          createdAt: {
-            gte: lastWeek,
+  const [
+    totalUsers,
+    newUsers,
+    bannedUsers,
+    emailVerifiedUsers,
+    totalGoogle,
+    totalCredential,
+    recentUsers,
+    recentLinks,
+  ] = await Promise.all([
+    prisma.user.count(),
+    prisma.user.count({
+      where: {
+        createdAt: {
+          gte: lastWeek,
+        },
+      },
+    }),
+    prisma.user.count({
+      where: {
+        banned: true,
+      },
+    }),
+    prisma.user.count({
+      where: {
+        emailVerified: true,
+      },
+    }),
+    prisma.account.count({ where: { providerId: "google" } }),
+    prisma.account.count({ where: { providerId: "credential" } }),
+
+    prisma.user.findMany({
+      take: 5,
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        image: true,
+        name: true,
+        email: true,
+        role: true,
+        emailVerified: true,
+        createdAt: true,
+      },
+    }),
+
+    prisma.link.findMany({
+      take: 5,
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        title: true,
+        url: true,
+        createdAt: true,
+        user: {
+          select: {
+            name: true,
+            email: true,
           },
         },
-      }),
-      prisma.user.count({
-        where: {
-          banned: true,
-        },
-      }),
+      },
+    }),
+  ]);
 
-      prisma.user.findMany({
-        take: 5,
-        orderBy: {
-          createdAt: "desc",
-        },
-        select: {
-          id: true,
-          image: true,
-          name: true,
-          email: true,
-          role: true,
-          emailVerified: true,
-          createdAt: true,
-        },
-      }),
-
-      prisma.account.count({ where: { providerId: "google" } }),
-      prisma.account.count({ where: { providerId: "credential" } }),
-      prisma.session.count({
-        where: {
-          createdAt: {
-            gte: startOfToday,
-          },
-        },
-      }),
-
-      prisma.link.findMany({
-        take: 5,
-        orderBy: {
-          createdAt: "desc",
-        },
-        select: {
-          id: true,
-          title: true,
-          url: true,
-          createdAt: true,
-          user: {
-            select: {
-              name: true,
-              email: true,
-            },
-          },
-        },
-      }),
-    ]);
-
-  const stats = [
+  const users = [
     {
-      title: "إجمالي المستخدمين",
+      title: "إجمالي",
       value: totalUsers,
       description: "جميع الحسابات المسجلة",
       icon: IconUsers,
     },
 
     {
-      title: "مستخدمون جدد",
+      title: "جدد",
       value: newUsers,
       description: "خلال آخر 7 أيام",
       icon: IconUserPlus,
     },
+    {
+      title: "الموثقة",
+      value: emailVerifiedUsers,
+      description: "جميع المستخدمين الموثقين",
+      icon: IconCheck,
+    },
 
     {
-      title: "المستخدمون المحظورون",
+      title: "المحظورون",
       value: bannedUsers,
       description: "الحسابات المحظورة حاليًا",
       icon: IconUserOff,
+    },
+    {
+      title: "بواسطة جوجل",
+      value: totalGoogle,
+      description: "المستخدمين بواسطة google",
+      icon: IconBrandGoogle,
+    },
+    {
+      title: "بواسطة email",
+      value: totalCredential,
+      description: "المستخدمين بواسطة email",
+      icon: IconMail,
     },
   ];
 
   return (
     <main dir="rtl" className="space-y-8 p-4 md:p-6 lg:p-8">
       {/* الإحصائيات */}
-      <section aria-label="إحصائيات المنصة" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {stats.map((stat) => {
-          return <CardAnalytics key={stat.title} item={stat} />;
-        })}
+      <section aria-label="إحصائيات المنصة" className="">
+        <Card>
+          <CardHeader>
+            <CardTitle className=" items-center p- flex gap-2">
+              <p>{"إجمالي المستخدمين"}</p>
+              <Badge variant={"outline"} className="text-3xl p-4">
+                {totalUsers}
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {users.map((user) => {
+              return <CardAnalytics key={user.title} item={user} />;
+            })}
+          </CardContent>
+        </Card>
       </section>
 
       {/* أحدث المستخدمين */}
@@ -236,12 +272,12 @@ export function CardAnalytics({
   ...props
 }: PropsCardAnalytics & ComponentPropsWithoutRef<typeof Card>) {
   return (
-    <Card className="via-card to-card gap-y-1" key={item.title}>
+    <Card className={cn("via-card to-card gap-y-1", className)} key={item.title}>
       <CardHeader className="  ">
+        {item.value !== undefined && <CardTitle className=" text-2xl">{numberFormatter.format(item.value)}</CardTitle>}
         <CardDescription className="text-sm">{item.title}</CardDescription>
         {/* <CardDescription className="text-sm font-medium "></CardDescription> */}
 
-        {item.value !== undefined && <CardTitle className=" text-2xl">{numberFormatter.format(item.value)}</CardTitle>}
         <CardAction className="flex size-10 items-center justify-center rounded-lg bg-foreground text-background">
           <item.icon className="size-5 " />
         </CardAction>
