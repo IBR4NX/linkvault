@@ -136,7 +136,7 @@ export default function IntroPage() {
           ].map((stall, index) => (
             <div
               key={index}
-              className={`${stall.width} ${index === 1 ? "translate-y-[-8px]" : ""} overflow-hidden shadow-2xl`}
+              className={`${stall.width} ${index === 1 ? "-translate-y-2" : ""} overflow-hidden shadow-2xl`}
             >
               <div className={`h-5 sm:h-8 ${stall.roof}`} />
 
