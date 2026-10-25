@@ -5,6 +5,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toast";
 import { cn } from "@/utils/cn";
 import { redirect } from "next/navigation";
+import { AUTHOR_NAME, SITE_NAME, SITE_NAME_EN, SITE_URL } from "@/lib/constants";
 
 const readexPro = Readex_Pro({
   subsets: ["arabic", "latin"],
@@ -13,13 +14,19 @@ const readexPro = Readex_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "ابراهيم المخلافي  ",
-  applicationName: "موقعك",
+  metadataBase: new URL(SITE_URL),
+  title: `${SITE_NAME} | ${SITE_NAME_EN}`,
+  description: "نطاق مخلاقي يديرة ابراهيم دبوان المخلافي",
+  applicationName: SITE_NAME,
   appleWebApp: {
-    title: "ibrahim Al-Mekhlafi",
+    title: "",
+  },
+  alternates: {
+    canonical: new URL(SITE_URL),
   },
   other: {
-    // title: "love",
+    author: AUTHOR_NAME.ar,
+    websiteName: SITE_NAME,
   },
 };
 
@@ -34,8 +41,8 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         <script type="application/ld+json">
-          "@context": "https://schema.org", "@type": "WebSite", "name": "شركة ابراهيم المخلافي", "url":
-          "https://www.ibovs.com/"
+          "@context": "https://schema.org", "@type": "WebSite", "name": {SITE_NAME}, "author":{AUTHOR_NAME.ar}
+          alternateName:[{SITE_NAME_EN}, {AUTHOR_NAME.en}], , "url": "https://www.ibovs.com/" inLanguage: "ar-AR",
         </script>
       </head>
       <body className="min-h-full bg-background transition-colors duration-300 flex flex-col">
