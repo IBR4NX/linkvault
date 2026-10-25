@@ -13,7 +13,7 @@ const readexPro = Readex_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "موقعك  ",
+  title: "ابراهيم المخلافي  ",
   applicationName: "موقعك",
   appleWebApp: {
     title: "ibrahim Al-Mekhlafi",
@@ -32,7 +32,12 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
       className={cn("h-full", "antialiased", "font-sans", readexPro.variable)}
     >
-      <head></head>
+      <head>
+        <script type="application/ld+json">
+          "@context": "https://schema.org", "@type": "WebSite", "name": "شركة ابراهيم المخلافي", "url":
+          "https://www.ibovs.com/"
+        </script>
+      </head>
       <body className="min-h-full bg-background transition-colors duration-300 flex flex-col">
         <ThemeProvider>{children}</ThemeProvider>
         <Toaster />
