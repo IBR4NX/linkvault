@@ -5,7 +5,8 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toast";
 import { cn } from "@/utils/cn";
 import { redirect } from "next/navigation";
-import { AUTHOR_NAME, SITE_NAME, SITE_NAME_EN, SITE_URL } from "@/lib/constants";
+import { AUTHOR, SITE, SITE_NAME, SITE_URL } from "@/lib/constants";
+import { JsonLd } from "@/lib/seo/json-ld";
 
 const readexPro = Readex_Pro({
   subsets: ["arabic", "latin"],
@@ -15,19 +16,28 @@ const readexPro = Readex_Pro({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: `${SITE_NAME} | ${SITE_NAME_EN}`,
+  title: `${SITE_NAME} | ${SITE.name.en}`,
   description: "نطاق مخلاقي يديرة ابراهيم دبوان المخلافي",
   applicationName: SITE_NAME,
   appleWebApp: {
-    title: "",
+    title: SITE_NAME,
   },
   alternates: {
     canonical: new URL(SITE_URL),
   },
   other: {
-    author: AUTHOR_NAME.ar,
+    author: AUTHOR.name.ar,
     websiteName: SITE_NAME,
   },
+};
+const js = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_NAME,
+  author: AUTHOR.name.ar,
+  alternateName: [SITE.name.en, AUTHOR.name.en],
+  url:SITE_URL,
+  inLanguage: "ar-AR",
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
@@ -40,10 +50,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       className={cn("h-full", "antialiased", "font-sans", readexPro.variable)}
     >
       <head>
-        <script type="application/ld+json">
-          "@context": "https://schema.org", "@type": "WebSite", "name": {SITE_NAME}, "author":{AUTHOR_NAME.ar}
-          alternateName:[{SITE_NAME_EN}, {AUTHOR_NAME.en}], , "url": "https://www.ibovs.com/" inLanguage: "ar-AR",
-        </script>
+        <JsonLd data={js}/>
       </head>
       <body className="min-h-full bg-background transition-colors duration-300 flex flex-col">
         <ThemeProvider>{children}</ThemeProvider>

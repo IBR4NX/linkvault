@@ -12,6 +12,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { useSlideIn, motion } from "@/hooks/use-slide-in";
+import { VerifyEmailDialog } from "./verify-email-dialog";
 
 export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
   const [name, setName] = useState("");
@@ -20,24 +21,43 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingGoogle, setLoadingGoogle] = useState(false);
+  const [verifyDialogOpen, setVerifyDialogOpen] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState("");
   const router = useRouter();
-  const isSignup = mode === "signup";
+  const isSignup = mode.toLowerCase() === "signup";
   async function submit(event: FormEvent<HTMLFormElement>) {
     console.log("LL");
     event.preventDefault();
     setLoading(true);
     setError("");
-    const result = isSignup
-      ? await authClient.signUp.email({ name, email, password })
-      : await authClient.signIn.email({ email, password });
-
-    setLoading(false);
-    if (result.error) {
-      setError(result.error.message || "Authentication failed.");
+    if (registeredEmail == email) {
+      setVerifyDialogOpen(true);
       return;
     }
-    router.push("/account");
-    router.refresh();
+
+    //   const result = isSignup
+    //   ? await authClient.signUp.email({ name, email, password })
+    //   : await authClient.signIn.email({ email, password });
+    //   if (result.error) {
+    //     setError(result.error?.message || "Authentication failed.");
+    //     return;
+    //   }
+    if (!isSignup) {
+      const { error: otpError } = await authClient.emailOtp.sendVerificationOtp({
+        email,
+        type: "email-verification",
+      });
+      setLoading(false);
+      if (otpError) {
+        setError("Account created, but the verification code could not be sent. Please try again.");
+        return;
+      }
+      setRegisteredEmail(email);
+      setVerifyDialogOpen(true);
+    } else {
+      router.push("/account");
+      router.refresh();
+    }
   }
   async function withGoogle(event: React.MouseEvent) {
     setLoadingGoogle(true);
@@ -57,6 +77,7 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
   });
   return (
     <motion.div {...animation} className="flex flex-col items-center justify-center w-full h-full">
+      <VerifyEmailDialog open={verifyDialogOpen} onOpenChange={setVerifyDialogOpen} email={registeredEmail} />
       <Card dir="rtl" className="w-full max-w-sm">
         <CardHeader className="space-y-  justify-center items-center">
           <div className="flex m-auto mb-6 h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground">
@@ -114,7 +135,7 @@ export function AuthForm({ mode }: { mode: "signin" | "signup" }) {
             </Button>
           </form>
           <div className="flex items-center gap-3">
-            <Separator   className="flex-1" />
+            <Separator className="flex-1" />
             <span className="shrink-0 text-xs text-muted-foreground">أو</span>
             <Separator className="flex-1" />
           </div>

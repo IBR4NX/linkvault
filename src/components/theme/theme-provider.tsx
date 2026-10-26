@@ -10,7 +10,7 @@ function ThemeProvider({ children, ...props }: React.ComponentProps<typeof NextT
       {...props}
       value={{
         light: "light",
-        dark: "dark",
+        dark: "dark" ,
         default: "system",
       }}
     >
