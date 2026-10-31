@@ -1,6 +1,6 @@
 "use client";
 import { MonitorCog, Moon, Sun, Palette } from "lucide-react";
-import { useTheme } from "next-themes";
+import { useTheme } from "@teispace/next-themes";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -46,7 +46,7 @@ export function ThemeToggle() {
 export const ModeToggle = () => {
   const [loading, setLoading] = React.useState(true);
   const { setTheme, themes, theme } = useTheme();
-  
+
   const handleToggle = () => {
     const currentTheme = themes.indexOf(theme || "light");
     const nextTheme = (currentTheme + 1) % themes.length;
@@ -55,45 +55,36 @@ export const ModeToggle = () => {
   };
   React.useEffect(() => {
     async function loadTheme() {
-    setLoading(false);
+      setLoading(false);
     }
     loadTheme();
   }, []);
   if (loading) return null;
 
   return (
-        <TooltipProvider>
+    <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger render={
-
-      <Button onClick={handleToggle} variant="outline" size="icon">
-        <>
-          {theme === "system" ? (
-            <MonitorCog />
-          ) : theme === "dark" ? (
-            <Sun />
-          ) : (
-            <Moon />
-          )}
-        </>
-      </Button>
-          }>
-        </TooltipTrigger>
+        <TooltipTrigger
+          render={
+            <Button onClick={handleToggle} variant="outline" size="icon">
+              <>{theme === "system" ? <MonitorCog /> : theme === "dark" ? <Sun /> : <Moon />}</>
+            </Button>
+          }
+        ></TooltipTrigger>
         <TooltipContent>{theme === "dark" ? "Use light mode" : "Use dark mode"}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
 };
 
-type ColorTheme = "blue" | "yellow" | "red";
-const colors: ColorTheme[] = ["blue", "yellow", "red"];
+type ColorTheme = "default" | "violet" | "pink" | "sky" | "amber";
+const colors: ColorTheme[] = ["default", "violet", "pink", "sky", "amber"];
 
-const isColorTheme = (value: string): value is ColorTheme =>
-  colors.includes(value as ColorTheme);
+const isColorTheme = (value: string): value is ColorTheme => colors.includes(value as ColorTheme);
 
 export function ColorToggle() {
   const [loading, setLoading] = React.useState(true);
-  const [color, setColor] = React.useState<ColorTheme>("blue");
+  const [color, setColor] = React.useState<ColorTheme>("default");
   React.useEffect(() => {
     setLoading(false);
     const storedColor = localStorage.getItem("color");
@@ -105,7 +96,7 @@ export function ColorToggle() {
   if (loading) return null;
   function setTheme(theme: ColorTheme) {
     const html = document.documentElement;
-    html.classList.remove("theme-blue", "theme-yellow", "theme-red");
+    html.classList.remove("theme-default", "theme-violet", "theme-pink", "theme-sky", "theme-amber");
     html.classList.add(`theme-${theme}`);
     localStorage.setItem("color", theme);
     setColor(theme);
@@ -114,7 +105,7 @@ export function ColorToggle() {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button variant="secondary" size="icon">
+          <Button size="icon">
             <>
               <Palette className="h-[1.2rem] w-[1.2rem]" />
             </>
