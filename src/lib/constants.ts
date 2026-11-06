@@ -28,7 +28,8 @@ export const SMTP = {
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASSWORD,
-  }
+  },
+
 };
 export const GOOGLE_CLIENT = {
   clientId: process.env.GOOGLE_CLIENT_ID!,
