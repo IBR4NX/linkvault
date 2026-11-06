@@ -4,3 +4,4 @@ import { auth } from "@/lib/auth/auth";
 export async function getCurrentSession() {
   return auth.api.getSession({ headers: await headers() });
 }
+

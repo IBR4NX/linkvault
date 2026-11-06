@@ -20,7 +20,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "cn": ["./src/lib/utils"],
+      "cn": ["./src/utils/cn"],
     }
   },
   "include": [
